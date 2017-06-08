@@ -1,4 +1,0 @@
-nodeValue - Even works for nodes that are not element type
-innerHTML - Returns HTML as string for the selected element type node
-textContent - Returns values as text and work for all nodes and not just elements.
-innerText - Returns only the visible text of a node whereas textContent returns even the hidden texts
