@@ -1,0 +1,156 @@
+<html>
+	<head>
+		<style type="text/css">
+			input[type='text'] {
+				width: 60px;
+				height: 60px;
+				text-align: center;
+				margin: 6px;
+				font-weight: bold;
+				font-size: 18px;
+				background-color: lightyellow;
+			}
+
+			.container {
+				margin-top: 5%;
+			}
+
+			.btn {
+				width: 130px;
+			    height: 40px;
+			    background-color: green;
+			    color: white;
+			    font-size: 20px;
+			    font-weight: bold;
+			}
+
+		</style>
+		<script type="text/javascript">
+			var matrix = Array();
+			function generateMatrix() {
+				matrix = Array();
+				let i = 1;
+				let tempArray = Array();
+				for (i=1; i<=16; i++) {
+					tempArray.push(Number(document.getElementById('e_' + i).value));
+					if (i % 4 == 0) {
+						matrix.push(tempArray);
+						tempArray = Array();
+					}
+				}
+
+			}
+
+			/**
+			Check if a number can be placed in a cell
+			*/
+			function safeMove(number, row, col) {
+				let i;
+				for (i=0; i<4; i++) {
+					if (matrix[row][i] == number || matrix[i][col] == number || matrix[row][col] == number) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+			function matrixIsComplete () {
+				let i, j;
+				for (i=0; i<4; i++) {
+					for (j=0; j<4; j++) {
+						if (!matrix[i][j])
+							return false;
+					}
+				}
+				return true;
+			}
+
+			function sudoku (r, c) {
+				if (matrixIsComplete()) {
+					return;
+				}
+
+				if (matrix[r][c]) {
+					if (r<=3 && c<=2) {
+						sudoku(r, c+1);
+					}
+					else if (r<=2){
+						sudoku(r+1, 0)
+					}
+				}
+
+				let i = 1;
+				for (i=1; i<=4 && (!matrixIsComplete()); i++) {
+					if (safeMove(i, r, c)) {
+						document.getElementById('e_'+(4*r+c+1)).value = i;
+						generateMatrix();
+						if (r<4 && c<3) {
+							sudoku(r, c+1);
+						}
+						else if (r<3 && c==3){
+							sudoku(r+1, 0)
+						}
+						else {
+							break;
+						}
+					}
+				}
+
+			}
+
+			function solve () {
+				generateMatrix();
+				sudoku(0, 0);
+				if (matrixIsComplete()) {
+					document.getElementById('message').innerHTML = "Solution Found !!";
+					document.body.bgColor = 'lightgreen';
+				}
+				else {
+					document.getElementById('message').innerHTML = "No Solution Found !!";
+					document.body.bgColor = 'crimson';
+				}
+
+			}
+
+		</script>
+	</head>
+
+	<body bgcolor='lightgray'>
+		<h1> <center> <u>4 x 4 Sudoku Solver</u> </center> </h1>
+		<form>
+			<div id='container' align="center" class="container">
+				<table border='0' bgcolor="coral">
+					<tr id="r_1">
+						<td id="c_1"><input type="text" id="e_1" maxlength="1"></td>
+						<td id="c_2"><input type="text" id="e_2" maxlength="1"></td>
+						<td id="c_3"><input type="text" id="e_3" maxlength="1"></td>
+						<td id="c_4"><input type="text" id="e_4" maxlength="1"></td>
+					</tr>
+					<tr id="r_2">
+						<td id="c_1"><input type="text" id="e_5" maxlength="1"></td>
+						<td id="c_2"><input type="text" id="e_6" maxlength="1"></td>
+						<td id="c_3"><input type="text" id="e_7" maxlength="1"></td>
+						<td id="c_4"><input type="text" id="e_8" maxlength="1"></td>
+					</tr>
+					<tr id="r_3">
+						<td id="c_1"><input type="text" id="e_9" maxlength="1"></td>
+						<td id="c_2"><input type="text" id="e_10" maxlength="1"></td>
+						<td id="c_3"><input type="text" id="e_11" maxlength="1"></td>
+						<td id="c_4"><input type="text" id="e_12" maxlength="1"></td>
+					</tr>
+					<tr id="r_4">
+						<td id="c_1"><input type="text" id="e_13" maxlength="1"></td>
+						<td id="c_2"><input type="text" id="e_14" maxlength="1"></td>
+						<td id="c_3"><input type="text" id="e_15" maxlength="1"></td>
+						<td id="c_4"><input type="text" id="e_16" maxlength="1"></td>
+					</tr>
+				</table>
+				<br><br>
+				<input type="button" class='btn' onclick="solve()" value="Solve">
+				<input type="button" class="btn" value="Reset" onclick="window.location.reload()">
+				<br><br>
+				<h1><font color="white"><span id="message"></span></font></h1>
+			</div>
+		</form>
+	</body>
+</html>
