@@ -27,12 +27,18 @@
 		</style>
 		<script type="text/javascript">
 			var matrix = Array();
+
 			function generateMatrix() {
+				let num;
 				matrix = Array();
 				let i = 1;
 				let tempArray = Array();
 				for (i=1; i<=16; i++) {
-					tempArray.push(Number(document.getElementById('e_' + i).value));
+					num = Number(document.getElementById('e_' + i).value);
+					if (num > 4 || num < 0) {
+						return true; // returns error
+					}
+					tempArray.push(num);
 					if (i % 4 == 0) {
 						matrix.push(tempArray);
 						tempArray = Array();
@@ -99,7 +105,12 @@
 			}
 
 			function solve () {
-				generateMatrix();
+				let error = generateMatrix();
+				if (error) {
+					document.getElementById('message').innerHTML = "Cells can have only numbers between 1 and 4 !!";
+					document.body.bgColor = 'crimson';
+					return;
+				}
 				sudoku(0, 0);
 				if (matrixIsComplete()) {
 					document.getElementById('message').innerHTML = "Solution Found !!";
