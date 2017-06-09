@@ -1,0 +1,29 @@
+<html>
+	<body>
+	<span id='last_opened'></span>
+	<br>
+	<input type="button" id='btn' value="click me!">This button was clicked <span id='click'></span> times.
+	<script>
+		let clickedCount = 0;
+		let date = localStorage.getItem('last_date');
+		if (date) {
+			document.getElementById('last_opened').innerHTML = "This file was last opened on " + date;
+		}
+		else {
+			document.getElementById('last_opened').innerHTML = "This file is opened for first time today";
+		}
+		localStorage.setItem('last_date', JSON.stringify(new Date()));
+
+		clickedCount = localStorage.getItem('clicked_count') || '0';
+		document.getElementById('click').innerHTML = clickedCount;
+
+		function updateClickCount () {
+			clickedCount = localStorage.getItem('clicked_count') || '0';
+			clickedCount = Number(clickedCount) + 1;
+			localStorage.setItem('clicked_count', clickedCount);
+			document.getElementById('click').innerHTML = clickedCount;
+		}
+		document.getElementById('btn').addEventListener('click', updateClickCount);
+	</script>
+	</body>
+</html>

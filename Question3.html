@@ -1,0 +1,44 @@
+<html>
+	<head>
+		<style>
+			td{
+				padding: 20px
+			}
+		</style>
+
+		<script>
+			var currentTable = null;
+			function generateTable () {
+				let rows, cols, temp, tableElement, rowElement, colElement, i, j;
+				if (currentTable) {
+					document.getElementById('contentArea').removeChild(currentTable);
+				}
+				temp = document.getElementById('dimensions').value;
+				temp = temp.split(',');
+				rows = Number(temp[0]);
+				cols = Number(temp[1]);
+				tableElement = document.createElement('table');
+				tableElement.border = 2;
+				for (i=1; i<=rows; i++) {
+					rowElement = document.createElement('tr');
+					for (j=1; j<=cols; j++) {
+						colElement = document.createElement('td');
+						rowElement.appendChild(colElement);
+					}
+					tableElement.appendChild(rowElement);
+				}
+				currentTable = tableElement;
+				document.getElementById('contentArea').appendChild(tableElement);
+
+			}
+		</script>
+	</head>
+
+	<body>
+		<input id="dimensions" placeholder="dimensions in format x,y">
+		<input type="button" onclick="generateTable()" value="generate">
+		
+
+		<div id="contentArea"></div>
+	</body>
+</html>
